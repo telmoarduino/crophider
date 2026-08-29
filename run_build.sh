@@ -1,0 +1,39 @@
+cd $HOME/crophider_build
+
+cat << 'EOF' > settings.gradle
+pluginManagement {
+    repositories {
+        maven { url 'https://maven.fabricmc.net/' }
+        gradlePluginPortal()
+    }
+}
+EOF
+
+cat << 'EOF' > build.gradle
+plugins {
+    id 'net.fabricmc.loom' version '1.7-SNAPSHOT'
+    id 'maven-publish'
+}
+
+version = "1.0.0"
+group = "com.crophider"
+
+repositories {
+    mavenCentral()
+    maven { url "https://maven.fabricmc.net/" }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:1.21.1"
+    mappings "net.fabricmc:yarn:1.21.1+build.3:v2"
+    modImplementation "net.fabricmc:fabric-loader:0.16.2"
+    modImplementation "net.fabricmc.fabric-api:fabrics-v1:0.102.0+1.21.1"}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.release = 21
+}
+EOF
+
+/tmp/gradle-8.10/bin/gradle build -Djava.net.preferIPv4Stack=true
+cp build/libs/crophider-1.0.0.jar "$HOME/.minecraft/mods/"
+echo "=== ¡MOD COMPILADO E INSTALADO CON ÅXITO! ==="
